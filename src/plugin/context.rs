@@ -254,6 +254,7 @@ impl RapierContext {
                             &mut self.impulse_joints,
                             &mut self.multibody_joints,
                             &mut self.ccd_solver,
+                            None,
                             hooks,
                             events,
                         );
@@ -283,6 +284,7 @@ impl RapierContext {
                         &mut self.impulse_joints,
                         &mut self.multibody_joints,
                         &mut self.ccd_solver,
+                        None,
                         hooks,
                         events,
                     );
@@ -304,6 +306,7 @@ impl RapierContext {
                         &mut self.impulse_joints,
                         &mut self.multibody_joints,
                         &mut self.ccd_solver,
+                        None,
                         hooks,
                         events,
                     );
@@ -322,8 +325,7 @@ impl RapierContext {
     /// Updates the state of the query pipeline, based on the collider positions known
     /// from the last timestep or the last call to `self.propagate_modified_body_positions_to_colliders()`.
     pub fn update_query_pipeline(&mut self) {
-        self.query_pipeline
-            .update(&self.islands, &self.bodies, &self.colliders);
+        self.query_pipeline.update(&self.bodies, &self.colliders);
     }
 
     /// The map from entities to rigid-body handles.
@@ -380,17 +382,17 @@ impl RapierContext {
             .up
             .try_into()
             .expect("The up vector must be non-zero.");
-        let autostep = options.autostep.map(|autostep| CharacterAutostep {
-            max_height: autostep.max_height.map_absolute(|x| x / physics_scale),
-            min_width: autostep.min_width.map_absolute(|x| x / physics_scale),
-            include_dynamic_bodies: autostep.include_dynamic_bodies,
-        });
-        let controller = rapier::control::KinematicCharacterController {
+        // let autostep = options.autostep.map(|autostep| CharacterAutostep {
+        //     max_height: autostep.max_height.map_absolute(|x| x / physics_scale),
+        //     min_width: autostep.min_width.map_absolute(|x| x / physics_scale),
+        //     include_dynamic_bodies: autostep.include_dynamic_bodies,
+        // });
+        let controller = rapier::control::BasicKinematicCharacterController {
             up,
             offset: options.offset.map_absolute(|x| x / physics_scale),
-            slide: options.slide,
-            autostep,
-            max_slope_climb_angle: options.max_slope_climb_angle,
+            // slide: options.slide,
+            // autostep,
+            // max_slope_climb_angle: options.max_slope_climb_angle,
             min_slope_slide_angle: options.min_slope_slide_angle,
             snap_to_ground: options
                 .snap_to_ground

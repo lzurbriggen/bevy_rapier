@@ -64,12 +64,12 @@ pub struct MoveShapeOptions {
     /// (must not be zero) to improve numerical stability of the character controller.
     pub offset: CharacterLength,
     /// Should the character try to slide against the floor if it hits it?
-    pub slide: bool,
+    // pub slide: bool,
     /// Should the character automatically step over small obstacles?
-    pub autostep: Option<CharacterAutostep>,
+    // pub autostep: Option<CharacterAutostep>,
     /// The maximum angle (radians) between the floor’s normal and the `up` vector that the
     /// character is able to climb.
-    pub max_slope_climb_angle: Real,
+    // pub max_slope_climb_angle: Real,
     /// The minimum angle (radians) between the floor’s normal and the `up` vector before the
     /// character starts to slide down automatically.
     pub min_slope_slide_angle: Real,
@@ -82,13 +82,13 @@ pub struct MoveShapeOptions {
 
 impl Default for MoveShapeOptions {
     fn default() -> Self {
-        let def = rapier::control::KinematicCharacterController::default();
+        let def = rapier::control::BasicKinematicCharacterController::default();
         Self {
             up: def.up.into(),
             offset: def.offset,
-            slide: def.slide,
-            autostep: def.autostep,
-            max_slope_climb_angle: def.max_slope_climb_angle,
+            // slide: def.slide,
+            // autostep: def.autostep,
+            // max_slope_climb_angle: def.max_slope_climb_angle,
             min_slope_slide_angle: def.min_slope_slide_angle,
             apply_impulse_to_dynamic_bodies: true,
             snap_to_ground: def.snap_to_ground,
@@ -118,12 +118,12 @@ pub struct KinematicCharacterController {
     /// (must not be zero) to improve numerical stability of the character controller.
     pub offset: CharacterLength,
     /// Should the character try to slide against the floor if it hits it?
-    pub slide: bool,
+    // pub slide: bool,
     /// Should the character automatically step over small obstacles?
-    pub autostep: Option<CharacterAutostep>,
+    // pub autostep: Option<CharacterAutostep>,
     /// The maximum angle (radians) between the floor’s normal and the `up` vector that the
     /// character is able to climb.
-    pub max_slope_climb_angle: Real,
+    // pub max_slope_climb_angle: Real,
     /// The minimum angle (radians) between the floor’s normal and the `up` vector before the
     /// character starts to slide down automatically.
     pub min_slope_slide_angle: Real,
@@ -144,19 +144,19 @@ impl KinematicCharacterController {
     pub(crate) fn to_raw(
         &self,
         physics_scale: Real,
-    ) -> Option<rapier::control::KinematicCharacterController> {
-        let autostep = self.autostep.map(|autostep| CharacterAutostep {
-            max_height: autostep.max_height.map_absolute(|x| x / physics_scale),
-            min_width: autostep.min_width.map_absolute(|x| x / physics_scale),
-            include_dynamic_bodies: autostep.include_dynamic_bodies,
-        });
+    ) -> Option<rapier::control::BasicKinematicCharacterController> {
+        // let autostep = self.autostep.map(|autostep| CharacterAutostep {
+        //     max_height: autostep.max_height.map_absolute(|x| x / physics_scale),
+        //     min_width: autostep.min_width.map_absolute(|x| x / physics_scale),
+        //     include_dynamic_bodies: autostep.include_dynamic_bodies,
+        // });
 
-        Some(rapier::control::KinematicCharacterController {
+        Some(rapier::control::BasicKinematicCharacterController {
             up: self.up.try_into().ok()?,
             offset: self.offset.map_absolute(|x| x / physics_scale),
-            slide: self.slide,
-            autostep,
-            max_slope_climb_angle: self.max_slope_climb_angle,
+            // slide: self.slide,
+            // autostep,
+            // max_slope_climb_angle: self.max_slope_climb_angle,
             min_slope_slide_angle: self.min_slope_slide_angle,
             snap_to_ground: self
                 .snap_to_ground
@@ -167,16 +167,16 @@ impl KinematicCharacterController {
 
 impl Default for KinematicCharacterController {
     fn default() -> Self {
-        let def = rapier::control::KinematicCharacterController::default();
+        let def = rapier::control::BasicKinematicCharacterController::default();
         Self {
             translation: None,
             custom_shape: None,
             custom_mass: None,
             up: def.up.into(),
             offset: def.offset,
-            slide: def.slide,
-            autostep: def.autostep,
-            max_slope_climb_angle: def.max_slope_climb_angle,
+            // slide: def.slide,
+            // autostep: def.autostep,
+            // max_slope_climb_angle: def.max_slope_climb_angle,
             min_slope_slide_angle: def.min_slope_slide_angle,
             apply_impulse_to_dynamic_bodies: true,
             snap_to_ground: def.snap_to_ground,
